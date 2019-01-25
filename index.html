@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+    <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.24.0/babel.js"></script>
+
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        function DashBoard() {
+            let micros = [];
+
+            for(let i =0; i<300000;i++){
+                // Active only if is odd
+                const isActive= i%2 !== 0;
+                const name = i + "- micro ";
+                micros.push(<MicroDashBoard name={name} active={isActive}/>);
+            }
+
+            return (
+                <div>
+                    {micros}
+                </div>
+
+            );
+        }
+
+        function MicroDashBoard(props){
+            if(props.active){
+                return <span>{props.name}</span>;
+            } else {
+                return null;
+            }
+        }
+
+        ReactDOM.render(
+            <DashBoard />,
+            document.getElementById("root")
+        )
+
+    </script>
+
+</body>
+</html>

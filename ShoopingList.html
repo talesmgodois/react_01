@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+    <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.24.0/babel.js"></script>
+
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+    const categories = [
+        {
+            title: 'Cars',
+            models: [
+                {
+                    year:2013,
+                    model:'A',
+                    price:32000
+                },
+                {
+                    year:2011,
+                    model:'B',
+                    price:4400
+                },
+                {
+                    year:2016,
+                    model:'B',
+                    price:15500
+                }
+            ]
+        },
+        {
+            title: 'Trucks',
+            models: [
+                {
+                    year:2014,
+                    model:'D',
+                    price:18000
+                },
+                {
+                    year:2013,
+                    model:'E',
+                    price:5200
+                }
+            ]
+        },
+        {
+            title: 'Convertibles',
+            models: [
+                {
+                    year:2009,
+                    model:'F',
+                    price:2000
+                },
+                {
+                    year:2010,
+                    model:'G',
+                    price:32000
+                },
+                {
+                    year:2012,
+                    model:'H',
+                    price:12500
+                },
+                {
+                    year:2017,
+                    model:'M',
+                    price:50000
+                }
+            ]
+        }
+    ];
+
+    function ListItem(props) {
+        return <li>{props.item} </li>
+    }
+
+    function TransportationTitle(props){
+        return (
+            <div>
+                <h1>{props.title}</h1>
+                <h2>{props.subTitle}</h2>
+
+            </div>
+        )
+    }
+
+    function OptionsHeader(props){
+        const items = props.items && props.items.map(i => <option value="i">{i}</option>);
+        const selectType = (
+            <div>
+                <p>
+                    Select Type
+                    <select>
+                        {items}
+                    </select>
+                </p>
+            </div>
+        );
+
+        return (
+            <div>
+                <h2>{props.header}</h2>
+                <div>
+                    New Only
+                    <input type="checkbox" id="coding" name="interest" value="coding" checked/>
+                </div>
+                {props.items && selectType}
+            </div>
+        )
+    }
+
+
+
+    function VehicleList(props){
+
+        const vehicleList = props.list && props.list.map( i=> <VehicleCategoryModel title={i.title} categorie={i} />);
+
+        return (
+            <ul>
+                {vehicleList}
+            </ul>
+        )
+    }
+
+    function VehicleCategoryModel(props){
+        const models = props.categorie && props.categorie.models.map(i => <VehicleModel model={i} />);
+
+        return (
+            <li>
+                <h2>{props.title}</h2>
+                {models}
+            </li>
+        )
+    }
+
+    function VehicleModel(props){
+        const label = props.buttonLabel?props.buttonLabel: "Buy Now";
+        return (
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Year</th>
+                        <th>Model</th>
+                        <th>Price</th>
+                        <th>Buy</th>
+                    </tr>
+                <tr>
+                    <td>{props.model.year}</td>
+                    <td>{props.model.model}</td>
+                    <td>{props.model.price}</td>
+                    <td>
+                        <button >{label}</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        )
+    }
+
+    function VehiclesApp(props){
+        const cars = ['All','Cars', 'Trucks', 'Convertibes'];
+        const _categories = categories;
+        return (
+            <div>
+                <TransportationTitle title="Welcome to React Transportation" subTitle="The best place to buy vehicles online"/>
+                <OptionsHeader header="Choose options" items={cars} />
+                <VehicleList list ={_categories}/>
+            </div>
+        )
+    }
+
+    class Welcome extends React.Component {
+        constructor (props) {
+            super(props);
+            this.state = {foo:123, bar:456};
+        }
+
+        render(){
+            return <h1>foo: {this.state.foo} bar: {this.state.bar}</h1>
+        }
+    }
+
+    class Counter1 extends  React.Component {
+        constructor(props){
+            super(props);
+            this.state = {message:"initial message"}
+        }
+
+        componentDidMount() {
+            this.setState(
+                {
+                    message:"new message"
+                }
+            );
+        }
+
+        render(){
+            return (
+                <div>
+                    Message: {this.state.message}
+                </div>
+            )
+        }
+    }
+
+    class Counter2 extends  React.Component {
+        constructor(props){
+            super(props);
+            this.state = {message:'asdf'}
+
+        }
+
+        componentDidMount() {
+            this.setState({count:42}, () => {
+                console.log(this.state.count);
+            })
+
+            this.state.message = 'CARACA';
+        }
+
+        render(){
+            return (
+                <div>
+                    Values: {this.state.message}
+                </div>
+            )
+        }
+    }
+
+    class Counter extends React.Component {
+        constructor ( props ) {
+            super(props);
+            this.state = {count:0};
+            // this.clickHandler = this.clickHandler.bind(this);
+        }
+
+        clickHandler() {
+            this.setState((prevState, props) => {
+                return {count:prevState.count +1}
+            })
+        }
+
+        render () {
+            return (
+
+                <div>
+                    <button onClick = {() => {this.clickHandler()}}>
+                        {this.props.text}
+                    </button>
+                    {this.state.count}
+                </div>
+
+            )
+        }
+    }
+
+    ReactDOM.render(
+        <div>
+            <Counter text="Count!" />
+            <Welcome  message="How you doin?"/>
+            <VehiclesApp />
+        </div>
+        ,
+        document.getElementById("root")
+    )
+
+</script>
+
+</body>
+</html>
